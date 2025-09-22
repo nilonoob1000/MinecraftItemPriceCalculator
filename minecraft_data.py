@@ -66,4 +66,4 @@ def get_uncraftable_items():
     return uncraftable_items
 
 if len(sys.argv) > 1 and sys.argv[1] == 'uncraftable':
-    print(get_uncraftable_items())
+    print(json.dumps(get_uncraftable_items()))
