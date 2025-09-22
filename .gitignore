@@ -1,3 +1,6 @@
+minecraft/*
+!minecraft/put_minecraft_folder_here
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
