@@ -3,41 +3,39 @@ import json
 
 known_prices = json.loads(open("base_prices.json", "r").read())
 
-def calculate_item_price(item):
-    if item in known_prices:
-        if known_prices[item] == "calculating":
-            return -1
-        return known_prices[item]
-    known_prices[item] = "calculating"
-    prices = []
+def calculate_possible_prices():
+    change = False
     for recipe in md.recipes:
         if not "result" in recipe or not "id" in recipe["result"]:
             continue
         
-        recipe_item = recipe["result"]["id"]
-        if recipe_item != item:
-            continue
-        amount = 1
+        result = recipe["result"]["id"]
+        count = 1
         if "count" in recipe["result"]:
-            amount = recipe["result"]["count"]
-
+            count = recipe["result"]["count"]
         ingredients = md.get_ingredients(recipe)
+
+        possible = True
         price = 0
-        for ingredient in ingredients: 
-            item_price = calculate_item_price(ingredient)
-            if item_price == -1:
-                continue
-            price += item_price
-        prices.append(price / amount)
-    price = -1
-    if len(prices) == 0:
-        print("no price for: " + item)
-    else:
-        print(item + " has the following possible prices: " + str(prices))
-        price = min(prices)
-    
-    known_prices[item] = price
-    return price
+        for ingredient in ingredients:
+            if ingredient not in known_prices:
+                possible = False
+                break;
+            price += known_prices[ingredient]
+        
+        price /= count
+        if not possible:
+            continue
+        if result in known_prices and price >= known_prices[result]:
+            continue
+        known_prices[result] = price
+        change = True
+    return change
 
-print(calculate_item_price("minecraft:diamond_sword"))
 
+
+while calculate_possible_prices():
+    pass
+
+file = open("prices.json", "w")
+file.write(json.dumps(known_prices))
