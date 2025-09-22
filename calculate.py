@@ -39,3 +39,11 @@ while calculate_possible_prices():
 
 file = open("prices.json", "w")
 file.write(json.dumps(known_prices))
+
+for recipe in md.recipes:
+    if not "result" in recipe or not "id" in recipe["result"]:
+        continue
+
+    result = recipe["result"]["id"]
+    if result not in known_prices:
+        print("no price calculated for: " + result + "    missing base prices")
