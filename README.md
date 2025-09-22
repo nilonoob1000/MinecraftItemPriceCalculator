@@ -19,8 +19,9 @@ To price dirt I mined as much as I could in one minute with an Efficiency V neth
    ```
    python3 calculate.py
    ```
-   The result will be stored in `base_prices.json`.
-3. List items with no crafting recipe:
+   The result will be stored in `prices.json`.
+
+To get an empty json of all items with no crafting recipe:
    ```
    python3 minecraft_data.py uncraftable
    ```
