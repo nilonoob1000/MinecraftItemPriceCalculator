@@ -1,5 +1,5 @@
 # MinecraftItemPriceCalculator
-**!!! I havent calculated most base prices yet !!!**
+**!!! I havent calculated most base prices yet, just set to 1!!!**
 
 I wrote this to calculate the price of every item for my minecraft server. If you just need the prices you can copy `prices.json`.
 
