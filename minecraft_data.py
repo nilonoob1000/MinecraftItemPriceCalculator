@@ -36,12 +36,14 @@ def get_ingredients(recipe):
     ingredients = []
     
     def add_ingredient(ingredient):
-        if "item" in ingredient:
+        if isinstance(ingredient, str):
+            ingredients.append(ingredient)
+        elif "item" in ingredient:
             ingredients.append(ingredient["item"])
         elif "tag" in ingredient:
             ingredients.append("tag:" + ingredient["tag"])
         else:
-            ingredients.append(ingredient[0]["item"])
+            add_ingredient(ingredient[0])
 
     if "ingredient" in recipe:
         add_ingredient(recipe["ingredient"])
@@ -50,10 +52,10 @@ def get_ingredients(recipe):
             add_ingredient(ingredient)
     elif "key" in recipe:
         for row in recipe["pattern"]:
-            for itemKey in row:
-                if itemKey == ' ':
+            for item_key in row:
+                if item_key == ' ':
                     continue
-                add_ingredient(recipe["key"][itemKey])
+                add_ingredient(recipe["key"][item_key])
     
     return ingredients
 
