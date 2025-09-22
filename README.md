@@ -1,24 +1,27 @@
-# MinecraftItemPriceCalculator
-**!!! I havent calculated most base prices yet, just set to 1!!!**
+## MinecraftItemPriceCalculator
+I wrote this to calculate sell-only prices for every item on my Minecraft server. If you only need the final prices, copy `prices.json`.
 
-I wrote this to calculate the price of every item for my minecraft server. If you just need the prices you can copy `prices.json`.
+These prices are meant for selling only. Many items are intentionally priced lower than their raw cost so late-game farms don’t break the server economy.
 
-# How it works
+## How it works
+Prices start from manually set values for all uncraftable items (see `base_prices.json`). Craftable item prices are derived by finding the cheapest way to produce them (including smelting when it’s cheaper).
 
-The prices of items are calculated using manually set prices for all uncraftable items (can be found in base_prices.json)
-I calculated the prices based on how many items you could farm with end game loot in one hour. One hour of farming should be worth 100000$.
+The pricing uses an end-game farming benchmark: one hour of efficient farming is valued at 100,000$. I measured how many of an item can be gathered in a set time with high-end gear, extrapolated to an hour, and scaled so that the measured quantity equals 100,000$.
 
-e.g:
-To calculate the price of dirt, I mined as much dirt es I could with a efficiency V netherite shovel in one minute (10 stacks) -> in one hour (600 stacks) -> 38400 should be worth 100000$ -> one dirt is worth 2.6$
+Example:
+To price dirt I mined as much as I could in one minute with an Efficiency V netherite shovel (≈10 stacks), extrapolated to one hour (≈600 stacks → 38,400 dirt). Scaling 38,400 to 100,000$ gives ~2.6$ per dirt.
 
-The script then goes through all craftable items and looks for the cheapest way to craft it (this includes methods like smelting without price increase).
-
-# Run it yourself
-
-Before you can run the script you will have to add the minecraft data folder into ./minecraft. you can find it in the server.jar from https://www.minecraft.net/en-us/download/server
-at `server.jar/META-INF/versions/1.x.x/server-1.x.x.jar/data` you might need to rename the .jar files to .zip or unzip them to navigate into.
-
-to calculate the prizes based on the base_prices you can run
-`python3 calculate.py` the result will be stored in `base_prices.json`
-
-you can run `python3 minecraft_data.py uncraftable` to get a list of all items with no crafting recipe. This misses items like wheat that can be crafted back and forth into a block. The calculate.py script will warn you if any items are missing.
+## Run it yourself
+1. Add the Minecraft data folder to `./minecraft`. Extract it from the server JAR available at https://www.minecraft.net/en-us/download/server. The data is at:
+   `server.jar/META-INF/versions/1.x.x/server-1.x.x.jar/data`
+   (You may need to rename the `.jar` to `.zip` or unzip it to access the files.)
+2. Calculate prices from `base_prices.json`:
+   ```
+   python3 calculate.py
+   ```
+   The result will be stored in `base_prices.json`.
+3. List items with no crafting recipe:
+   ```
+   python3 minecraft_data.py uncraftable
+   ```
+   This can miss items that convert back and forth (e.g., wheat <-> hay bale). `calculate.py` will warn if any items are missing.
